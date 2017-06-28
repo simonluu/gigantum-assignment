@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class RainChance extends Component {
   render() {
@@ -12,6 +13,12 @@ class RainChance extends Component {
       </div>
     );
   }
+}
+
+RainChance.propTypes = {
+  rainError: PropTypes.string,
+  rain: PropTypes.number,
+  onRainChange: PropTypes.func,
 }
 
 export default RainChance;

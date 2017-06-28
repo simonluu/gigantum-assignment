@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class ErrorComponent extends Component {
   render() {
@@ -8,6 +9,10 @@ class ErrorComponent extends Component {
       </div>
     );
   }
+}
+
+ErrorComponent.propTypes = {
+  error: PropTypes.string,
 }
 
 export default ErrorComponent;

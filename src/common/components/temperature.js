@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class TemperatureRange extends Component {
   render() {
@@ -14,6 +15,14 @@ class TemperatureRange extends Component {
       </div>
     );
   }
+}
+
+TemperatureRange.propTypes = {
+  tempError: PropTypes.string,
+  minTemp: PropTypes.number,
+  maxTemp: PropTypes.number,
+  onMinChange: PropTypes.func,
+  onMaxChange: PropTypes.func,
 }
 
 export default TemperatureRange;

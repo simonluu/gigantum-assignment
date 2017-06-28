@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class CommuteRange extends Component {
   render() {
@@ -29,5 +30,23 @@ class CommuteRange extends Component {
     );
   }
 }
+
+CommuteRange.propTypes = {
+  morningError: PropTypes.string,
+  eveningError: PropTypes.string,
+  commuteError: PropTypes.string,
+  morningTimeOne: PropTypes.string,
+  morningTimeTwo: PropTypes.string,
+  eveningTimeOne: PropTypes.string,
+  eveningTimeTwo: PropTypes.string,
+  dayOne: PropTypes.string,
+  dayTwo: PropTypes.string,
+  onMorningOneChange: PropTypes.func,
+  onMorningTwoChange: PropTypes.func,
+  onEveningOneChange: PropTypes.func,
+  onEveningTwoChange: PropTypes.func,
+  onDayOneChange: PropTypes.func,
+  onDayTwoChange: PropTypes.func,
+};
 
 export default CommuteRange;

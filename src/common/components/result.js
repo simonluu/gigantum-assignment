@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class Result extends Component {
   render() {
@@ -19,6 +20,11 @@ class Result extends Component {
       </div>
     );
   }
+}
+
+Result.propTypes = {
+  morning: PropTypes.bool,
+  transportation: PropTypes.string,
 }
 
 export default Result;
