@@ -1,8 +1,6 @@
 .app {
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
-  height: 100vh;
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -22,11 +20,11 @@
   margin-right: 5px;
 }
 
-#error {
+.error {
   color: red;
   font-size: 1.5em;
 }
 
-#true {
+.true {
   border-color: red;
 }

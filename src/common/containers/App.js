@@ -6,6 +6,7 @@ import TemperatureRange from '../components/temperature';
 import RainChance from '../components/rain';
 import CommuteRange from '../components/commute';
 import Result from '../components/result';
+import ErrorComponent from '../components/error';
 
 import { retrieveWeather } from '../actions';
 
@@ -33,6 +34,7 @@ export class App extends Component {
       morningData: [],
       eveningData: [],
       tempError: null,
+      rainError: null,
       morningError: null,
       eveningError: null,
       commuteError: null,
@@ -57,19 +59,27 @@ export class App extends Component {
   decideTransportation() {
     const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
     let errorTemp = false;
+    let errorRain = false;
     let errorMorning = false;
     let errorEvening = false;
     let errorCommute = false;
 
     // sets all the errors to null and looks for the errors again.
-    this.setState({ tempError: null, morningError: null, eveningError: null, commuteError: null });
+    this.setState({ tempError: null, rainError: null, morningError: null, eveningError: null, commuteError: null });
 
     // checks if the minTemp and maxTemps are empty
     // or if the maxTemp is less than the minTemp, which makes the range invalid.
     // if either of these are true, sets tempError message and errorTemp is set to true so it doesn't make the api call.
     if ((this.state.minTemp === "" && this.state.maxTemp === "") || this.state.maxTemp < this.state.minTemp) {
       errorTemp = true;
-      this.setState({ tempError: "Please enter valid Temperature range" });
+      this.setState({ tempError: "Please enter valid temperature range" });
+    }
+
+    // checks if the chance of rain input is empty.
+    // if it is sets the rainError message.
+    if (this.state.rain === "") {
+      errorRain = true;
+      this.setState({ rainError: "Please enter a valid rain chance"})
     }
 
     // checks if morningTimeTwo is less than morningTimeOne.
@@ -95,7 +105,7 @@ export class App extends Component {
 
     // If there are no errors, then this part will calculate the current time if not past
     // the evening commute times.
-    if (!errorTemp && !errorMorning && !errorEvening && !errorCommute) {
+    if (!errorTemp && !errorRain && !errorMorning && !errorEvening && !errorCommute) {
       // creates a new date of the current time.
       const date = new Date();
       // checks if the hour is past the evening commute time range.
@@ -169,9 +179,9 @@ export class App extends Component {
   }
 
   render() {
-    let tempError, morningError, eveningError, commuteError, morningResult, eveningResult;
+    let error, tempError, rainError, morningError, eveningError, commuteError, morningResult, eveningResult;
     // when the weather data is obtained it will go through this if statement.
-    if (this.props.weather !== undefined) {
+    if (this.props.weather !== undefined && this.props.weather.error === null) {
       // loops through the hourly data
       for (let i = 0; i < this.props.weather.hourly.data.length; i+=1) {
         const data = this.props.weather.hourly.data[i];
@@ -207,31 +217,30 @@ export class App extends Component {
           }
         }
       }
+    } else if (this.props.weather !== undefined && this.props.weather.error !== null) {
+      error = (
+        <ErrorComponent error={this.props.weather.error} />
+      );
     }
     // If there is an error, it will go through this if statement
     // and render specific errors.
-    if (this.state.tempError !== null || this.state.morningError !== null || this.state.eveningError !== null || this.state.commuteError !== null) {
+    if (this.state.tempError !== null || this.state.rainError !== null || this.state.morningError !== null || this.state.eveningError !== null || this.state.commuteError !== null) {
       morningResult = null;
       eveningResult = null;
       tempError = (
-        <div id="error">
-          {this.state.tempError}
-        </div>
+        <ErrorComponent error={this.state.tempError} />
+      );
+      rainError = (
+        <ErrorComponent error={this.state.rainError} />
       );
       morningError = (
-        <div id="error">
-          {this.state.morningError}
-        </div>
+        <ErrorComponent error={this.state.morningError} />
       );
       eveningError = (
-        <div id="error">
-          {this.state.eveningError}
-        </div>
+        <ErrorComponent error={this.state.eveningError} />
       );
       commuteError = (
-        <div id="error">
-          {this.state.commuteError}
-        </div>
+        <ErrorComponent error={this.state.commuteError} />
       );
     }
     return (
@@ -254,6 +263,7 @@ export class App extends Component {
               onMaxChange={this.onMaxChange} />
 
             <RainChance
+              rainError={this.state.rainError}
               rain={this.state.rain}
               onRainChange={this.onRainChange} />
 
@@ -279,7 +289,9 @@ export class App extends Component {
           <button onClick={this.decideTransportation}>Decide My Transportation</button>
 
           <div id="errors">
+            {error}
             {tempError}
+            {rainError}
             {morningError}
             {eveningError}
             {commuteError}
@@ -291,7 +303,7 @@ export class App extends Component {
         </div>
 
         <footer id="footer">
-          <img src={footerImage} alt="Powered by Dark Sky" width="500px" height="110px" />
+          <img src={footerImage} alt="Powered by Dark Sky" width="360px" height="81px" />
         </footer>
       </div>
     );
