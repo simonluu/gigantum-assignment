@@ -181,7 +181,7 @@ export class App extends Component {
   render() {
     let error, tempError, rainError, morningError, eveningError, commuteError, morningResult, eveningResult;
     // when the weather data is obtained it will go through this if statement.
-    if (this.props.weather !== undefined && this.props.weather.error === null) {
+    if (this.props.weather !== undefined && this.props.weather.error === undefined) {
       // loops through the hourly data
       for (let i = 0; i < this.props.weather.hourly.data.length; i+=1) {
         const data = this.props.weather.hourly.data[i];
@@ -217,7 +217,7 @@ export class App extends Component {
           }
         }
       }
-    } else if (this.props.weather !== undefined && this.props.weather.error !== null) {
+    } else if (this.props.weather !== undefined && this.props.weather.error !== undefined) {
       error = (
         <ErrorComponent error={this.props.weather.error} />
       );
