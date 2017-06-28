@@ -119,10 +119,10 @@ export class App extends Component {
         // sets the range of times of the morning commutes and evening commutes
         // this is used to compare the hourly times of the weather to get a specific data point in the weather api.
         this.setState({
-          timeOne: Math.round(morningTimeOne / 1000),
-          timeTwo: Math.round(morningTimeTwo / 1000),
-          timeThree: Math.round(eveningTimeOne / 1000),
-          timeFour: Math.round(eveningTimeTwo / 1000),
+          timeOne: Math.floor(morningTimeOne / 1000),
+          timeTwo: Math.floor(morningTimeTwo / 1000),
+          timeThree: Math.floor(eveningTimeOne / 1000),
+          timeFour: Math.floor(eveningTimeTwo / 1000),
         });
 
         // this is the action call, that then will make an api request to the proxy server.
@@ -300,7 +300,7 @@ export class App extends Component {
 
 // this function maps the redux state to props.
 function mapStateToProps(state) {
-  return { weather: state.weather.data }
+  return { weather: state.weather.data };
 }
 
 // this connects App to the redux store. So it can use the redux state and actions.
